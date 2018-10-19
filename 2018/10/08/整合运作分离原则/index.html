@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="个人博客">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          整合运作分离原则 - WX blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/10/08/整合运作分离原则/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('undefined')
+            /*post*/
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/BeanTechSign-white.png');
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#PHP" title="PHP">PHP</a>
+                            
+                              <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                            
+                        </div>
+                        <h1>整合运作分离原则</h1>
+                        <h2 class="subheading">整合运作分离原则.</h2>
+                        <span class="meta">
+                            Posted by wang xiao on
+                            2018-10-08
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WX</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>几个星期前，我参加了DDDBelgium聚会，我很幸运地参加了由Pim和Joop领导的重构研讨会。在令人难以置信的工作坊Pim之后，Dries和我正在讨论我们之前重构过的一些代码。在谈话中没有那么久，Pim就随便放弃了“整合操作隔离原则”这个词。</p>
+<p>现在我要去，老实说（就像我和他们一样），我不知道他到底在说什么。也许你也不是。</p>
+<h2><span id="一个简单的pricecalculator">一个简单的PriceCalculator</span></h2>
+<p>我们来看看一些代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Car</span>\<span class="title">Rent</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">PriceCalculator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">calculate</span><span class="params">(CarRental $carRental)</span>: <span class="title">int</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $startDate = $carRental-&gt;getStartDate();</span><br><span class="line">        $endDate = $carRental-&gt;getEndDate();</span><br><span class="line">        $days = $startDate-&gt;diff($endDate);</span><br><span class="line">        $dayPrice = $days * $carRental-&gt;getPricePerDay();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> $dayPrice + ($carRental-&gt;getDistance() * $carRental-&gt;getPricePerKm());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如您所见，我们有一小段代码可以计算几天租金的价格。<br>
+代码本身非常简单。我们收集开始日期，结束日期。我们计算天数，然后乘以价格+公里驱动的天数。一小段代码，做了很多。</p>
+<p>没有测试就没有代码完成：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">declare</span>(strict_types=<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">namespace</span> <span class="title">Tests</span>\<span class="title">Car</span>\<span class="title">Rent</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">PriceCalculatorTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@test</span></span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">it_calculates_a_price</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            $carRental = <span class="keyword">$this</span>-&gt;getMockBuilder(CarRental::class)</span><br><span class="line">                -&gt;disableOriginalConstructor()</span><br><span class="line">                -&gt;getMock();</span><br><span class="line">    </span><br><span class="line">            $carRental-&gt;expects(<span class="keyword">$this</span>-&gt;once())</span><br><span class="line">                -&gt;method(<span class="string">'getStartDate'</span>)</span><br><span class="line">                -&gt;willReturn(time());</span><br><span class="line">    </span><br><span class="line">            $carRental-&gt;expects(<span class="keyword">$this</span>-&gt;once())</span><br><span class="line">                -&gt;method(<span class="string">'getEndDate'</span>)</span><br><span class="line">                -&gt;willReturn(time());</span><br><span class="line">    </span><br><span class="line">            $carRental-&gt;expects(<span class="keyword">$this</span>-&gt;once())</span><br><span class="line">                -&gt;method(<span class="string">'getPricePerDay'</span>)</span><br><span class="line">                -&gt;willReturn(<span class="number">10</span>);</span><br><span class="line">    </span><br><span class="line">            $carRental-&gt;expects(<span class="keyword">$this</span>-&gt;once())</span><br><span class="line">                -&gt;method(<span class="string">'getDistance'</span>)</span><br><span class="line">                -&gt;willReturn(<span class="number">10</span>);</span><br><span class="line">    </span><br><span class="line">            $carRental-&gt;expects(<span class="keyword">$this</span>-&gt;once())</span><br><span class="line">                -&gt;method(<span class="string">'getPricePerKm'</span>)</span><br><span class="line">                -&gt;willReturn(<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">            $calculator = <span class="keyword">new</span> PriceCalculator();</span><br><span class="line">            $price = $calculator-&gt;calculate($carRental);</span><br><span class="line">    </span><br><span class="line">            <span class="keyword">$this</span>-&gt;assertSame(<span class="number">110</span>, $price);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这是一个很大的考验。<br>
+它嘲笑了一些东西，然后调用计算器并断言结果。总而言之，这是一个非常简单的单元测试，但并不是一个有趣的单元测试。</p>
+<h2><span id="将代码转换为更多代码">将代码转换为更多代码</span></h2>
+<p>如果我们看一下这个<code>PriceCalculator</code>类，你可以看到它在结构上做了两件事：它获取数据并对该数据执行操作。换句话说：它<em>集成</em>并<em>运作</em>。</p>
+<p>在这一点上，您可能已经弄清楚了集成操作隔离原则的全部内容：将它们分开。让我展示应用此原则的上一课的样子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Car</span>\<span class="title">Rent</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">PriceCalculator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $dateRangePriceCalculator;</span><br><span class="line">    <span class="keyword">private</span> $distancePriceCalculator;</span><br><span class="line">    <span class="keyword">private</span> $dayDistanceCalculator;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        DateRangePriceCalculator $dateRangePriceCalculator,</span></span></span><br><span class="line"><span class="function"><span class="params">        DistancePriceCalculator $distancePriceCalculator,</span></span></span><br><span class="line"><span class="function"><span class="params">        DayDistanceCalculator $dayDistanceCalculator</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;dateRangePriceCalculator = $dateRangePriceCalculator;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;distancePriceCalculator = $distancePriceCalculator;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;dayDistanceCalculator = $dayDistanceCalculator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">calculate</span><span class="params">(CarRental $carRental)</span>: <span class="title">int</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $startDate = $carRental-&gt;getStartDate();</span><br><span class="line">        $endDate = $carRental-&gt;getEndDate();</span><br><span class="line">        $days = $startDate-&gt;diff($endDate);</span><br><span class="line"></span><br><span class="line">        $dayPrice = <span class="keyword">$this</span>-&gt;dateRangePriceCalculator-&gt;calculate(</span><br><span class="line">            $days,</span><br><span class="line">            $carRental-&gt;getPricePerDay()</span><br><span class="line">        );</span><br><span class="line">        $distancePrice = <span class="keyword">$this</span>-&gt;distancePriceCalculator-&gt;calculate(</span><br><span class="line">            $carRental-&gt;getDistance(), </span><br><span class="line">						$carRental-&gt;getPricePerKm()</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;dayDistanceCalculator-&gt;calculate(</span><br><span class="line">						$dayPrice, </span><br><span class="line">						$distancePrice</span><br><span class="line">				);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Car</span>\<span class="title">Rent</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DateRangePriceCalculator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">calculate</span><span class="params">(int $days, int $pricePerDay)</span> :<span class="title">int</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> $days * $pricePerDay;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Car</span>\<span class="title">Rent</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DistancePriceCalculator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">calculate</span><span class="params">(int $distance, int $pricePerKm)</span>: <span class="title">int</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> $distance * $pricePerKm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Car</span>\<span class="title">Rent</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DayDistanceCalculator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">calculate</span><span class="params">(int $dayPrice, int $distancePrice)</span>: <span class="title">int</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> $dayPrice + $distancePrice;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>“弗雷德里克，你狡猾的黑客！”你可能会大喊大叫，你已经把一个小方法变成了一个4类方法，它使代码行加倍。<br>
+嗯，你没错。这是更多的代码。乍一看，它看起来更复杂。但让我们退后一步，重温一遍。</p>
+<h2><span id="提取复杂性">提取复杂性</span></h2>
+<p>如果你去除依赖注入等，你就离开了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">calculate</span><span class="params">(CarRental $carRental)</span>: <span class="title">int</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $startDate = $carRental-&gt;getStartDate();</span><br><span class="line">    $endDate = $carRental-&gt;getEndDate();</span><br><span class="line">    $days = $startDate-&gt;diff($endDate);</span><br><span class="line"></span><br><span class="line">    $dayPrice = <span class="keyword">$this</span>-&gt;dateRangePriceCalculator-&gt;calculate(</span><br><span class="line">        $days,</span><br><span class="line">        $carRental-&gt;getPricePerDay()</span><br><span class="line">    );</span><br><span class="line">    $distancePrice = <span class="keyword">$this</span>-&gt;distancePriceCalculator-&gt;calculate(</span><br><span class="line">        $carRental-&gt;getDistance(), </span><br><span class="line">                    $carRental-&gt;getPricePerKm()</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;dayDistanceCalculator-&gt;calculate(</span><br><span class="line">                    $dayPrice, </span><br><span class="line">                    $distancePrice</span><br><span class="line">            );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里没有什么复杂的事情发生。一切都完美地描述了正在发生的事情。那个$dayPrice？哦，它已被计算出来，它是如何计算的？谁在乎。无需担心。几乎没有编程知识的人可以阅读这种方法并完全理解这里发生的事情。<br>
+但是逻辑呢？</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DateRangePriceCalculator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">calculate</span><span class="params">(int $days, int $pricePerDay)</span>: <span class="title">int</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> $days * $pricePerDay;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我认为那里的逻辑更简单。<br>
+在未来，可能会有一些业务逻辑变化（我们可能需要对税收做些什么？）。我们现在知道我们可以做到这一点，所有内容都包含在这个小课程中。</p>
+<p>这也是<a href="https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle" target="_blank" rel="noopener">开放原则</a>的一个很好的例子。</p>
+<p>是的，我们确实有更多的代码。但它是非常简单的代码，易于阅读，易于调试和最酷的：易于测试。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span>(strict_types=<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Tests</span>\<span class="title">Car</span>\<span class="title">Rent</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Car</span>\<span class="title">Rent</span>\<span class="title">DateRangePriceCalculator</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DateRangePriceCalculatorTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@test</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">it_calculates_a_price_for_a_date_range</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $dateRangeCaluclator = <span class="keyword">new</span> DateRangePriceCalculator();</span><br><span class="line">        $price = $dateRangeCaluclator-&gt;calculate(<span class="number">2</span>, <span class="number">50</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;assertSame(<span class="number">100</span>, $price);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在这是一个不错的单元测试。没有嘲笑，易于编写，易于阅读。（将其与本文顶部的单元测试进行比较）。</p>
+<h2><span id="结论">结论</span></h2>
+<p>正如您所看到的，集成操作分离原则只是一个很长而复杂的术语，用于描述非常简单的事情。这看起来似乎很多，但值得。您的代码，特别是您的测试将在以后感谢您</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/03/18/hexo-theme-beantech/" data-toggle="tooltip" data-placement="top" title="[Hexo] Theme BeanTech">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">一个简单的PriceCalculator</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">将代码转换为更多代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">提取复杂性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">结论</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#PHP" title="PHP">PHP</a>
+                        
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://beantech.org" target="_blank">Bean Tech</a></li>
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">It Helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "your-disqus-ID";
+    var disqus_identifier = "http://yoursite-url/2018/10/08/整合运作分离原则/";
+    var disqus_url = "http://yoursite-url/2018/10/08/整合运作分离原则/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/YenYuHsuan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/jwwb681232">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/yu-hsuan-yen">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; wang xiao 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
